@@ -1,7 +1,9 @@
-package se.amandaflorencia.projektuppgiftits;
+package se.amandaflorencia.projektuppgiftits.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import se.amandaflorencia.projektuppgiftits.User;
+import se.amandaflorencia.projektuppgiftits.UserRepository;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 
 import java.util.List;

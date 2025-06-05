@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
-import se.amandaflorencia.projektuppgiftits.UserService;
+import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 
 //Här har vi en controller för registering av ny användare och logga in

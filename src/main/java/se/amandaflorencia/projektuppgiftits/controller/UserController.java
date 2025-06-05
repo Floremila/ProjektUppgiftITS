@@ -3,7 +3,7 @@ package se.amandaflorencia.projektuppgiftits.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.amandaflorencia.projektuppgiftits.User;
-import se.amandaflorencia.projektuppgiftits.UserService;
+import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 import java.util.List;
 
@@ -27,6 +27,10 @@ public class UserController {
             return ResponseEntity.ok(users);
         }
     }
+
+    //TODO : deleteById()
+
+    //TODO: updateById()
 
 
 }
