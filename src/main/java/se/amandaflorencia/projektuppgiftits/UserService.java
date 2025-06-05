@@ -2,6 +2,7 @@ package se.amandaflorencia.projektuppgiftits;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 
 import java.util.List;
 
@@ -16,5 +17,15 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void registerUser(UserRegistrationDTO userRegistrationDTO) {
+        User user = new User();
+        user.setUsername(userRegistrationDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+        user.setRole(userRegistrationDTO.getRole());
+        user.setConsentGiven(userRegistrationDTO.isConsentGiven());
+
+        userRepository.save(user);
     }
 }

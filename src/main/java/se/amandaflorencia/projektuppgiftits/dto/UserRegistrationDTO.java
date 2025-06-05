@@ -1,11 +1,13 @@
-package se.amandaflorencia.projektuppgiftits;
+package se.amandaflorencia.projektuppgiftits.dto;
 
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class UserDTO {
+//Denna DTO är till för registrering
+
+public class UserRegistrationDTO {
     @NotBlank(message = "Username is required")
     private String username;
     @NotBlank(message = "Password is required")
