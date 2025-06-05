@@ -1,9 +1,23 @@
 package se.amandaflorencia.projektuppgiftits;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UserDTO {
+    @NotBlank(message = "Username is required")
     private String username;
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Pattern(
+            regexp = "^(?=.*[A-Z])(?=(?:.*\\d){2,})(?=(?:.*[!@#$%&*]){2,}).*$",
+            message = "Password must contain at least 1 uppercase letter, 2 digits, and 2 special characters"
+    )
     private String password;
+    @NotBlank(message = "Role is required")
     private String role;
+    @AssertTrue(message = "You must accept data storage terms")
     private boolean consentGiven;
 
     public String getUsername() {
