@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 //Denna DTO är till för inloggning
+// Denna DTO är till för inloggning via formulär med validering (används ej i JWT/REST-flödet)
+
 
 public class LoginRequest {
     @NotBlank(message = "Username is required")
