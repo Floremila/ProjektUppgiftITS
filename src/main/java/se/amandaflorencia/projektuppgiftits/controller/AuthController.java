@@ -12,6 +12,10 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 //Här har vi en controller för registering av ny användare och logga in
 
+// TODO: Lägg till JWT-login i /login-metoden
+// Använd JwtLoginRequest, AuthenticationManager och TokenService
+// Jag har redan förberett alla delar i SecurityConfig och TokenService :)
+
 
 @RestController
 @RequestMapping("/users")

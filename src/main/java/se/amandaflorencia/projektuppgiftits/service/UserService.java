@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import se.amandaflorencia.projektuppgiftits.User;
 import se.amandaflorencia.projektuppgiftits.UserRepository;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
+import se.amandaflorencia.projektuppgiftits.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -13,11 +14,13 @@ public class UserService {
     private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder  passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
+
         return userRepository.findAll();
     }
 
@@ -30,4 +33,24 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+
+    public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("User with id " + id + " not found");
+        }
+        userRepository.deleteById(id);
+    }
+
+
+    public User updateUser(Long id, User updatedUser) {
+        return userRepository.findById(id).map(user -> {
+            user.setUsername(updatedUser.getUsername());
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            user.setRole(updatedUser.getRole());
+            user.setConsentGiven(updatedUser.isConsentGiven());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
 }
