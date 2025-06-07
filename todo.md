@@ -8,11 +8,11 @@ Att göra:
 [x] Lagt till `@Bean` för `PasswordEncoder` (`BCryptPasswordEncoder`)
 [x] Lagt till `AuthenticationManager`-bean
 [x] Påbörjat `SecurityFilterChain` med CSRF avstängt och stateless session
-[ ] Lägg till `.authorizeHttpRequests()` med rätt regler: - **ATT GÖRA**
+[ ] Lägg till `.authorizeHttpRequests()` med rätt regler:
   - `/auth/login` → permitAll
   - `/user` → tillåts för ADMIN och USER
   - `/admin` → endast för ADMIN
-[ ] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) - **ATT GÖRA**
+[ ] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
 
     
 [DONE] UserNotFoundException och lägg till ExceptionHandler
@@ -22,8 +22,8 @@ Att göra:
 [x] TokenService – generera JWT-token från Authentication 
 [x] LoginRequest – Java record med username och password 
 [x] Lägg till JwtEncoder och JwtDecoder som @Bean i SecurityConfig 
-[] AuthController – endpoint /request-token för inloggning  -  **ATT GÖRA**
-[] Lägg till jwtAuthenticationConverter och koppla scope till roller -  **ATT GÖRA**
+[] AuthController – endpoint /request-token för inloggning 
+[] Lägg till jwtAuthenticationConverter och koppla scope till roller 
 
 [] Logging component - logga registrering och borttagning i service-klassen
 [] Logback.xml
