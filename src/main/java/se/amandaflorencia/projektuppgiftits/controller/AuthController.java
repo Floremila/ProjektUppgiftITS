@@ -2,19 +2,21 @@ package se.amandaflorencia.projektuppgiftits.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import se.amandaflorencia.projektuppgiftits.dto.JwtLoginRequest;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
+import se.amandaflorencia.projektuppgiftits.service.TokenService;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 
 //Här har vi en controller för registering av ny användare och logga in
 
-// TODO: Lägg till JWT-login i /login-metoden
-// Använd JwtLoginRequest, AuthenticationManager och TokenService
-// Jag har redan förberett alla delar i SecurityConfig och TokenService :)
 
 
 @RestController
@@ -22,9 +24,13 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/register")
@@ -34,7 +40,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("");
+    public ResponseEntity<String> login(@RequestBody JwtLoginRequest jwtLoginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        jwtLoginRequest.username(),
+                        jwtLoginRequest.password()
+                )
+        );
+
+        String token = tokenService.generateToken(authentication);
+        return ResponseEntity.ok(token);
     }
 }

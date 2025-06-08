@@ -2,16 +2,21 @@ Att göra:
 
 [DONE] Fler metoder i userController: delete och update
 [DONE] Lägg till motsvarande metoder med logik i UserService
+[DONE] Login metod i authController
 
 [DOING] Skapa en SecurityConfig
 [x] Skapat `SecurityConfig`-klass
 [x] Lagt till `@Bean` för `PasswordEncoder` (`BCryptPasswordEncoder`)
 [x] Lagt till `AuthenticationManager`-bean
 [x] Påbörjat `SecurityFilterChain` med CSRF avstängt och stateless session
-[ ] Lägg till `.authorizeHttpRequests()` med rätt regler:
+[x] Lägg till `.authorizeHttpRequests()` med rätt regler:
   - `/auth/login` → permitAll
   - `/user` → tillåts för ADMIN och USER
   - `/admin` → endast för ADMIN
+
+    (jag använde /users/register och users/login -> permitAll i secutityFilterChain, och sedan @PreAuthorize på
+    metoderna i UserController för att specificera vilken behörighet som får göra vilken metod)
+
 [ ] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
 
     
