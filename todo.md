@@ -17,7 +17,8 @@ Att göra:
     (jag använde /users/register och users/login -> permitAll i secutityFilterChain, och sedan @PreAuthorize på
     metoderna i UserController för att specificera vilken behörighet som får göra vilken metod)
 
-[ ] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
+[x] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
+[ ] Lägg till `.requestMatchers` för swagger
 
     
 [DONE] UserNotFoundException och lägg till ExceptionHandler
@@ -27,8 +28,8 @@ Att göra:
 [x] TokenService – generera JWT-token från Authentication 
 [x] LoginRequest – Java record med username och password 
 [x] Lägg till JwtEncoder och JwtDecoder som @Bean i SecurityConfig 
-[] AuthController – endpoint /request-token för inloggning 
-[] Lägg till jwtAuthenticationConverter och koppla scope till roller 
+[x] AuthController – endpoint /request-token för inloggning 
+[x] Lägg till jwtAuthenticationConverter och koppla scope till roller 
 
 [] Logging component - logga registrering och borttagning i service-klassen
 [] Logback.xml
