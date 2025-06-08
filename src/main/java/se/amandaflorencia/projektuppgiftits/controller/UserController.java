@@ -3,7 +3,7 @@ package se.amandaflorencia.projektuppgiftits.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import se.amandaflorencia.projektuppgiftits.User;
+import se.amandaflorencia.projektuppgiftits.AppUser;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 import java.util.List;
@@ -21,12 +21,12 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        if (users.isEmpty()){
+    public ResponseEntity<List<AppUser>> getAllUsers() {
+        List<AppUser> appUsers = userService.getAllUsers();
+        if (appUsers.isEmpty()){
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(users);
+            return ResponseEntity.ok(appUsers);
         }
     }
 
@@ -39,9 +39,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<AppUser> updateUser(@PathVariable Long id, @RequestBody AppUser updatedAppUser) {
+        AppUser appUser = userService.updateUser(id, updatedAppUser);
+        return ResponseEntity.ok(appUser);
     }
 
 
