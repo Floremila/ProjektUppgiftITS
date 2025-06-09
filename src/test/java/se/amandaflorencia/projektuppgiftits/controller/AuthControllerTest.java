@@ -61,7 +61,7 @@ class AuthControllerTest {
 
 
     @Test
-    void loginTest() throws Exception {
+    void givenValidCredentials_whenLogin_thenReturnStatusOk() throws Exception {
         Authentication mockAuth = mock(Authentication.class);
         when(authenticationManager.authenticate(any())).thenReturn(mockAuth);       //låtsas att autentisering lyckas och returnerar mockat objekt
 
@@ -76,7 +76,7 @@ class AuthControllerTest {
 
 
     @Test
-    void registerUserTest() throws Exception {
+    void givenValidCredentials_whenRegister_thenReturnStatusOk() throws Exception {
         UserRegistrationDTO dto = new UserRegistrationDTO(
                 "Amanda",
                 "Password123!!",

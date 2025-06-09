@@ -37,7 +37,7 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUserAsAdminTest() throws Exception{
+    void givenAdminUser_whenDeleteUser_thenStatusNoContent() throws Exception{
         mockMvc.perform(
                 delete("/user/{id}", 1L)
                 .with(user("admin").password("hemligt").roles("ADMIN"))
@@ -46,7 +46,7 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUserAsUserTest() throws Exception {
+    void givenRegularUser_whenDeleteUser_thenStatusForbidden() throws Exception {
         mockMvc.perform(
                 delete("/user/{id}", 1L)
                         .with(user("user").password("hemligt").roles("USER"))
