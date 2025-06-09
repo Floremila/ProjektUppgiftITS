@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -72,6 +73,18 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("fake token"));
+    }
+
+    @Test
+    void givenInvalidCredentials_whenLogin_thenReturnUnauthorized() throws Exception{
+
+        when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("Invalid credentials"));  //simulerar misslyckad autentisering
+
+        mockMvc.perform(post("/users/login")
+                .content("{\"username\": \"Amanda\", \"password\": \"Fel\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+
     }
 
 
