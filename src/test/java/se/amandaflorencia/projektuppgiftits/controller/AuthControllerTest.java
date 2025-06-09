@@ -1,6 +1,5 @@
 package se.amandaflorencia.projektuppgiftits.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +31,10 @@ class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
