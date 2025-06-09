@@ -1,5 +1,7 @@
 package se.amandaflorencia.projektuppgiftits.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 
 import org.springframework.test.web.servlet.MockMvc;
+import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 import se.amandaflorencia.projektuppgiftits.service.TokenService;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 import org.springframework.http.MediaType;
@@ -77,7 +80,23 @@ class AuthControllerTest {
 
 
     @Test
-    void registerUser() {
+    void registerUserTest() throws Exception {
+        UserRegistrationDTO dto = new UserRegistrationDTO(
+                "Amanda",
+                "Password123!!",
+                "USER",
+                true
+        );
+
+        String jsonBody = new ObjectMapper().writeValueAsString(dto);
+
+        mockMvc.perform(post("/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string("User successfully created"));
+
+
     }
 
 
