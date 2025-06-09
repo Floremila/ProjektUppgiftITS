@@ -109,4 +109,23 @@ class AuthControllerTest {
     }
 
 
+    @Test
+    void givenInvalidCredentials_whenRegister_thenReturnBadRequest() throws Exception{
+        UserRegistrationDTO dto = new UserRegistrationDTO(
+                "User",
+                "FelFormat",
+                "USER",
+                true
+        );
+
+        String jsonBody = new ObjectMapper().writeValueAsString(dto);
+
+        mockMvc.perform(post("/users/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
 }
