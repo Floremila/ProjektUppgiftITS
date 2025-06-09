@@ -37,11 +37,21 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUser() throws Exception{
+    void deleteUserAsAdminTest() throws Exception{
         mockMvc.perform(
                 delete("/user/{id}", 1L)
                 .with(user("admin").password("hemligt").roles("ADMIN"))
                 )
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteUserAsUserTest() throws Exception {
+        mockMvc.perform(
+                delete("/user/{id}", 1L)
+                        .with(user("user").password("hemligt").roles("USER"))
+        )
+                .andExpect(status().isForbidden());
+
     }
 }
