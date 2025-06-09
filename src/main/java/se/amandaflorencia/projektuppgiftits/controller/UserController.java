@@ -1,5 +1,6 @@
 package se.amandaflorencia.projektuppgiftits.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,11 @@ import java.util.List;
 
 //Denna controller sköter åtgärder som kräver behörighet
 
+
+@Tag(
+        name = "User Management",
+        description = "Endpoints for viewing, updating and deleting users"
+)
 @RestController
 @RequestMapping("/user")
 public class UserController {
