@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import se.amandaflorencia.projektuppgiftits.AppUser;
+import se.amandaflorencia.projektuppgiftits.model.AppUser;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 import java.util.List;

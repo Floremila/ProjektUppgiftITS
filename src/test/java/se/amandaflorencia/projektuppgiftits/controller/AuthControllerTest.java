@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 import se.amandaflorencia.projektuppgiftits.service.TokenService;
@@ -25,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-                            //Testade först webMvc, men det blev problem med annotationer: mockitoBean och Mockbean.
+
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthControllerTest {
@@ -40,8 +42,7 @@ class AuthControllerTest {
     private AuthenticationManager authenticationManager;
 
     @TestConfiguration
-    static class TestMockConfig {       //Var tvungen att skapa en testkonfiguration för att inte programmet ska köra de "riktiga".
-                                        //hade mycket problem med authenticationManager, fick tillslut byta namn och ha @Primary, så att programmet inte använder sig av den riktiga authenticationManager i SecurityConfig
+    static class TestMockConfig {
         @Bean
         public UserService userService() {
             return mock(UserService.class);

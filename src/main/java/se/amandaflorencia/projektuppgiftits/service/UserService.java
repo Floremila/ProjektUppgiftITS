@@ -1,10 +1,15 @@
 package se.amandaflorencia.projektuppgiftits.service;
+
+
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.amandaflorencia.projektuppgiftits.AppUser;
-import se.amandaflorencia.projektuppgiftits.UserRepository;
+import org.springframework.validation.annotation.Validated;
+import se.amandaflorencia.projektuppgiftits.model.AppUser;
+import se.amandaflorencia.projektuppgiftits.repository.UserRepository;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 import se.amandaflorencia.projektuppgiftits.exception.UserNotFoundException;
 import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
@@ -12,6 +17,7 @@ import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
 import java.util.List;
 
 @Service
+@Validated
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -33,7 +39,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void registerUser(UserRegistrationDTO dto) {
+
+    public void registerUser(@Valid UserRegistrationDTO dto) {
         logger.info("Starting registration for user: {}", dto.getUsername());
         try {
             AppUser appUser = new AppUser();
@@ -49,6 +56,7 @@ public class UserService {
             logger.error("Error registering user '{}'", dto.getUsername(), e);
             throw e;
         }
+
     }
 
     public void deleteUserById(Long id) {

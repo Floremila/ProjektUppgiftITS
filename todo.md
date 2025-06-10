@@ -35,8 +35,10 @@ Att göra:
 [x] Logback.xml
 
 
-[] Tester med MockMmc för:
+[DONE] Tester med MockMmc för:
     - Inloggning
     - Registrering
     - Borttagning
+
+[ ] Felmeddelande när man som user försöker göra åtgärder utanför ens behörighet
 

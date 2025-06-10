@@ -31,6 +31,8 @@ import se.amandaflorencia.projektuppgiftits.service.JwtUserDetailsService;
 @Configuration
 public class SecurityConfig {
 
+    private final JwtUserDetailsService jwtUserDetailsService;
+
     public SecurityConfig(JwtUserDetailsService jwtUserDetailsService) {
         this.jwtUserDetailsService = jwtUserDetailsService;
     }
@@ -46,7 +48,6 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    private final JwtUserDetailsService jwtUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,7 +56,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/users/register",
                                 "/users/login",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
