@@ -39,3 +39,7 @@ build/
 /data/*.data
 /data/*.script
 /data/*.backup
+
+# log
+/logs/
+/logs/**
