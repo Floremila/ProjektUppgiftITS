@@ -1,7 +1,9 @@
 package se.amandaflorencia.projektuppgiftits.service;
 
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import se.amandaflorencia.projektuppgiftits.AppUser;
 import se.amandaflorencia.projektuppgiftits.UserRepository;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
@@ -11,6 +13,7 @@ import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
 import java.util.List;
 
 @Service
+@Validated
 public class UserService {
     private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -28,7 +31,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void registerUser(UserRegistrationDTO userRegistrationDTO) {
+    public void registerUser(@Valid UserRegistrationDTO userRegistrationDTO) {
         AppUser appUser = new AppUser();
         appUser.setUsername(userRegistrationDTO.getUsername());
         appUser.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
