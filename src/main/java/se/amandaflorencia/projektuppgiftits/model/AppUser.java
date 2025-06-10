@@ -1,4 +1,4 @@
-package se.amandaflorencia.projektuppgiftits;
+package se.amandaflorencia.projektuppgiftits.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
