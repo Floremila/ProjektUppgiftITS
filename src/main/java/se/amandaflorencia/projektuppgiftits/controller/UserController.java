@@ -9,7 +9,6 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 import java.util.List;
 
-//Denna controller sköter åtgärder som kräver behörighet
 
 
 @Tag(
@@ -25,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<AppUser>> getAllUsers() {
         List<AppUser> appUsers = userService.getAllUsers();
