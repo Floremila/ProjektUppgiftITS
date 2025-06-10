@@ -22,6 +22,13 @@ public class UserRegistrationDTO {
     @AssertTrue(message = "You must accept data storage terms")
     private boolean consentGiven;
 
+    public UserRegistrationDTO(String username, String password, String role, boolean consentGiven) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.consentGiven = consentGiven;
+    }
+
     public String getUsername() {
         return username;
     }
