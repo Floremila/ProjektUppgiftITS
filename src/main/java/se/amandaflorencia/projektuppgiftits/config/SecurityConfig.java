@@ -25,10 +25,16 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 import com.nimbusds.jose.proc.SecurityContext;
+import se.amandaflorencia.projektuppgiftits.service.JwtUserDetailsService;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    public SecurityConfig(JwtUserDetailsService jwtUserDetailsService) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,22 +47,30 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+    private final JwtUserDetailsService jwtUserDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // ⚠️ Desactiva CSRF para JWT
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/register", "/users/login").permitAll()
-                .anyRequest().authenticated()
-
-        )
-                .oauth2ResourceServer(oauth2 ->oauth2
+                        .requestMatchers(
+                                "/users/register",
+                                "/users/login",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 );
 
         return http.build();
     }
+
 
     @Bean
     public KeyPair keyPair() {
@@ -91,14 +105,15 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");    //Använder denna för att kunna ha @PreAuthorize i metoderna i UserController
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("scope");
+        JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();
+        gac.setAuthorityPrefix("");
+        gac.setAuthoritiesClaimName("scope");
 
-        JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
-        authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        return authenticationConverter;
+        JwtAuthenticationConverter conv = new JwtAuthenticationConverter();
+        conv.setJwtGrantedAuthoritiesConverter(gac);
+        return conv;
     }
+
 
 
 

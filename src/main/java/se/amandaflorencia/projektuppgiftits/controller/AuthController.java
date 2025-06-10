@@ -1,5 +1,6 @@
 package se.amandaflorencia.projektuppgiftits.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,8 +18,10 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 //Här har vi en controller för registering av ny användare och logga in
 
-
-
+@Tag(
+        name = "Authentication",
+        description = "Endpoints for user registration and login using JWT"
+)
 @RestController
 @RequestMapping("/users")
 public class AuthController {
@@ -47,6 +50,7 @@ public class AuthController {
                         jwtLoginRequest.password()
                 )
         );
+
 
         String token = tokenService.generateToken(authentication);
         return ResponseEntity.ok(token);

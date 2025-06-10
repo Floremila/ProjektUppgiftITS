@@ -2,10 +2,11 @@ package se.amandaflorencia.projektuppgiftits.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.amandaflorencia.projektuppgiftits.User;
+import se.amandaflorencia.projektuppgiftits.AppUser;
 import se.amandaflorencia.projektuppgiftits.UserRepository;
 import se.amandaflorencia.projektuppgiftits.dto.UserRegistrationDTO;
 import se.amandaflorencia.projektuppgiftits.exception.UserNotFoundException;
+import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
 
 import java.util.List;
 
@@ -13,26 +14,31 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private final LoggingComponent loggingComponent;
 
-    public UserService(UserRepository userRepository, PasswordEncoder  passwordEncoder) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder  passwordEncoder, LoggingComponent loggingComponent) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loggingComponent = loggingComponent;
     }
 
-    public List<User> getAllUsers() {
+    public List<AppUser> getAllUsers() {
 
         return userRepository.findAll();
     }
 
     public void registerUser(UserRegistrationDTO userRegistrationDTO) {
-        User user = new User();
-        user.setUsername(userRegistrationDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
-        user.setRole(userRegistrationDTO.getRole());
-        user.setConsentGiven(userRegistrationDTO.isConsentGiven());
+        AppUser appUser = new AppUser();
+        appUser.setUsername(userRegistrationDTO.getUsername());
+        appUser.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+        appUser.setRole(userRegistrationDTO.getRole());
+        appUser.setConsentGiven(userRegistrationDTO.isConsentGiven());
 
-        userRepository.save(user);
+        userRepository.save(appUser);
+        loggingComponent.logUserRegistration(appUser.getUsername());
     }
+
 
 
     public void deleteUserById(Long id) {
@@ -40,16 +46,18 @@ public class UserService {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
         userRepository.deleteById(id);
+        loggingComponent.logUserDeletion(id);
     }
 
 
-    public User updateUser(Long id, User updatedUser) {
-        return userRepository.findById(id).map(user -> {
-            user.setUsername(updatedUser.getUsername());
-            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-            user.setRole(updatedUser.getRole());
-            user.setConsentGiven(updatedUser.isConsentGiven());
-            return userRepository.save(user);
+
+    public AppUser updateUser(Long id, AppUser updatedAppUser) {
+        return userRepository.findById(id).map(appUser -> {
+            appUser.setUsername(updatedAppUser.getUsername());
+            appUser.setPassword(passwordEncoder.encode(updatedAppUser.getPassword()));
+            appUser.setRole(updatedAppUser.getRole());
+            appUser.setConsentGiven(updatedAppUser.isConsentGiven());
+            return userRepository.save(appUser);
         }).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 

@@ -11,10 +11,10 @@ Att göra:
 [x] Påbörjat `SecurityFilterChain` med CSRF avstängt och stateless session
 [x] Lägg till `.authorizeHttpRequests()` med rätt regler:
   - `/auth/login` → permitAll
-  - `/user` → tillåts för ADMIN och USER
+  - `/appUser` → tillåts för ADMIN och USER
   - `/admin` → endast för ADMIN
 
-    (jag använde /users/register och users/login -> permitAll i secutityFilterChain, och sedan @PreAuthorize på
+    (jag använde /appUsers/register och appUsers/login -> permitAll i secutityFilterChain, och sedan @PreAuthorize på
     metoderna i UserController för att specificera vilken behörighet som får göra vilken metod)
 
 [x] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
@@ -31,8 +31,8 @@ Att göra:
 [x] AuthController – endpoint /request-token för inloggning 
 [x] Lägg till jwtAuthenticationConverter och koppla scope till roller 
 
-[] Logging component - logga registrering och borttagning i service-klassen
-[] Logback.xml
+[x] Logging component - logga registrering och borttagning i service-klassen (update method ska ha Log?)
+[x] Logback.xml
 
 
 [] Tester med MockMmc för:
