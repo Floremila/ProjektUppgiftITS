@@ -29,7 +29,6 @@ import se.amandaflorencia.projektuppgiftits.service.JwtUserDetailsService;
 
 @EnableMethodSecurity(prePostEnabled = true)
 @Configuration
-@EnableMethodSecurity
 public class SecurityConfig {
 
     public SecurityConfig(JwtUserDetailsService jwtUserDetailsService) {
@@ -113,8 +112,6 @@ public class SecurityConfig {
         conv.setJwtGrantedAuthoritiesConverter(gac);
         return conv;
     }
-
-
 
 
 }
