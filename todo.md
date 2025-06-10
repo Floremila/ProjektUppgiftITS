@@ -18,7 +18,7 @@ Att göra:
     metoderna i UserController för att specificera vilken behörighet som får göra vilken metod)
 
 [x] Lägg till jwtAuthenticationConverter och aktivera JWT-stöd med .oauth2ResourceServer(...) 
-[ ] Lägg till `.requestMatchers` för swagger
+[x] Lägg till `.requestMatchers` för swagger
 
     
 [DONE] UserNotFoundException och lägg till ExceptionHandler

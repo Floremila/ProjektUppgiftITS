@@ -16,7 +16,6 @@ import se.amandaflorencia.projektuppgiftits.service.TokenService;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 
-//Här har vi en controller för registering av ny användare och logga in
 
 @Tag(
         name = "Authentication",
