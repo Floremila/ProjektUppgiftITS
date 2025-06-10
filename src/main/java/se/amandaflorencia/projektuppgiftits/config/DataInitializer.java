@@ -10,11 +10,9 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 public class DataInitializer {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(UserService userService, PasswordEncoder passwordEncoder) {
+    public DataInitializer(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -25,7 +23,7 @@ public class DataInitializer {
         if (!userExists){
             UserRegistrationDTO adminDto = new UserRegistrationDTO(
                     "admin",
-                    passwordEncoder.encode("Password123!!"),
+                    "Password123!!",
                     "ADMIN",
                     true
                     );
