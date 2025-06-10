@@ -1,5 +1,6 @@
 package se.amandaflorencia.projektuppgiftits.service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.amandaflorencia.projektuppgiftits.AppUser;
@@ -12,53 +13,79 @@ import java.util.List;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final LoggingComponent loggingComponent;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder  passwordEncoder, LoggingComponent loggingComponent) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       LoggingComponent loggingComponent) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.loggingComponent = loggingComponent;
     }
 
     public List<AppUser> getAllUsers() {
-
+        logger.info("Fetching all users");
         return userRepository.findAll();
     }
 
-    public void registerUser(UserRegistrationDTO userRegistrationDTO) {
-        AppUser appUser = new AppUser();
-        appUser.setUsername(userRegistrationDTO.getUsername());
-        appUser.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
-        appUser.setRole(userRegistrationDTO.getRole());
-        appUser.setConsentGiven(userRegistrationDTO.isConsentGiven());
+    public void registerUser(UserRegistrationDTO dto) {
+        logger.info("Starting registration for user: {}", dto.getUsername());
+        try {
+            AppUser appUser = new AppUser();
+            appUser.setUsername(dto.getUsername());
+            appUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+            appUser.setRole(dto.getRole());
+            appUser.setConsentGiven(dto.isConsentGiven());
 
-        userRepository.save(appUser);
-        loggingComponent.logUserRegistration(appUser.getUsername());
+            userRepository.save(appUser);
+            loggingComponent.logUserRegistration(appUser.getUsername());
+            logger.debug("User '{}' registered successfully with ID {}", appUser.getUsername(), appUser.getId());
+        } catch (Exception e) {
+            logger.error("Error registering user '{}'", dto.getUsername(), e);
+            throw e;
+        }
     }
-
-
 
     public void deleteUserById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException("User with id " + id + " not found");
+        logger.info("Starting deletion of user with ID: {}", id);
+        try {
+            if (!userRepository.existsById(id)) {
+                throw new UserNotFoundException("User with id " + id + " not found");
+            }
+
+            userRepository.deleteById(id);
+            loggingComponent.logUserDeletion(id);
+            logger.debug("User with ID {} deleted successfully", id);
+        } catch (Exception e) {
+            logger.error("Error deleting user with ID {}", id, e);
+            throw e;
         }
-        userRepository.deleteById(id);
-        loggingComponent.logUserDeletion(id);
     }
-
-
 
     public AppUser updateUser(Long id, AppUser updatedAppUser) {
-        return userRepository.findById(id).map(appUser -> {
-            appUser.setUsername(updatedAppUser.getUsername());
-            appUser.setPassword(passwordEncoder.encode(updatedAppUser.getPassword()));
-            appUser.setRole(updatedAppUser.getRole());
-            appUser.setConsentGiven(updatedAppUser.isConsentGiven());
-            return userRepository.save(appUser);
-        }).orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-    }
+        logger.info("Starting update for user with ID: {}", id);
+        try {
+            return userRepository.findById(id).map(existingUser -> {
+                existingUser.setUsername(updatedAppUser.getUsername());
+                existingUser.setPassword(passwordEncoder.encode(updatedAppUser.getPassword()));
+                existingUser.setRole(updatedAppUser.getRole());
+                existingUser.setConsentGiven(updatedAppUser.isConsentGiven());
 
+                AppUser saved = userRepository.save(existingUser);
+                logger.debug("User with ID {} updated successfully", id);
+                return saved;
+            }).orElseThrow(() -> {
+                logger.warn("Attempted to update non-existent user with ID {}", id);
+                return new UserNotFoundException("User with id " + id + " not found");
+            });
+        } catch (Exception e) {
+            logger.error("Error updating user with ID {}", id, e);
+            throw e;
+        }
+    }
 }
