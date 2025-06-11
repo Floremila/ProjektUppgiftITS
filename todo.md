@@ -40,5 +40,5 @@ Att göra:
     - Registrering
     - Borttagning
 
-[ ] Felmeddelande när man som user försöker göra åtgärder utanför ens behörighet
+[x] Felmeddelande när man som user försöker göra åtgärder utanför ens behörighet
 
