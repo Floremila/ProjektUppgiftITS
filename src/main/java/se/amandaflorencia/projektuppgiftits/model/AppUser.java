@@ -5,6 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/** Entity klassen för användaren, med variabler, getters och setters.
+ * Med hjälp av denna entity kan fälten mappas till databasen och en tabell skapas automatiskt
+ * med Spring Data Jpa
+ */
+
 @Entity
 public class AppUser {
 
