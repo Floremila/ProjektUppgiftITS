@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-//Denna DTO är till för registrering
+/** Klassen är till för att samla nya användarens uppgifter vid registrering
+ * Genom validering ser man till att det är i korrekt format
+ * Används sedan för att mappas mot en AppUser
+ * */
 
 public class UserRegistrationDTO {
     @NotBlank(message = "Username is required")

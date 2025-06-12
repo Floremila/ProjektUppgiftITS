@@ -19,6 +19,12 @@ import se.amandaflorencia.projektuppgiftits.service.TokenService;
 import se.amandaflorencia.projektuppgiftits.service.UserService;
 import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
 
+/** REST-kontroller för autentisering
+ * Har olika endpoints för att registrera användare och logga in
+ * Använder sig av userService för tillgång till databas, authenticationManager och TokenService
+ * för autentisering
+ * */
+
 @Tag(
         name = "Authentication",
         description = "Endpoints for user registration and login using JWT"
@@ -44,6 +50,10 @@ public class AuthController {
         this.loggingComponent = loggingComponent;
     }
 
+    /** Metoden registrerar en ny användare, enbart för användare med admin-roll
+     * @param userRegistrationDTO tar in validerade användaruppgifter för en ny användare
+     * @return ResponseEntity med statuskod 200ok om användare skapats
+     * */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
@@ -52,6 +62,11 @@ public class AuthController {
         return ResponseEntity.ok("User successfully created");
     }
 
+    /** Metod för autentisering och inloggning, returnerar en jwt
+     * @param jwtLoginRequest tar emot användarnamn och lösenord via jwt
+     * @return ResponseEntity med statuskod 200 OK samt jwt-token om lyckad inloggning
+     *
+     * */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody JwtLoginRequest jwtLoginRequest) {
         Authentication authentication = authenticationManager.authenticate(

@@ -9,7 +9,10 @@ import se.amandaflorencia.projektuppgiftits.service.UserService;
 
 import java.util.List;
 
-
+/** REST-kontroller som används för användarhantering
+ * Har olika endpoints för olika operationer - hämta, radera och uppdatera användare
+ * Använder UserService för att få tillgång till affärslogik och databasen.
+ * */
 
 @Tag(
         name = "User Management",
@@ -24,6 +27,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    /** Metod som hämtar alla användare, får endast användas av en användare med admin-roll
+     * @return ResponseEntity statuskod, och om användare finns - lista med användare
+     * */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<AppUser>> getAllUsers() {

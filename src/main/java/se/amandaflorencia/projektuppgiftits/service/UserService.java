@@ -16,6 +16,9 @@ import se.amandaflorencia.projektuppgiftits.util.LoggingComponent;
 
 import java.util.List;
 
+/** UserService är servicelagret för användaren, kopplingen mellan databasen genom UserRepository
+ * och controllern.
+ * */
 @Service
 @Validated
 public class UserService {
@@ -34,12 +37,16 @@ public class UserService {
         this.loggingComponent = loggingComponent;
     }
 
+    /** Metoden hämtar alla användare genom inbyggd metod i UserRepository */
     public List<AppUser> getAllUsers() {
         logger.info("Fetching all users");
         return userRepository.findAll();
     }
 
-
+    /** Metod för att registrera en ny användare
+     * @param dto validerade värden som ska mappas till en AppUser.
+     * Användaren sparas sen via UserRepository.
+     * */
     public void registerUser(@Valid UserRegistrationDTO dto) {
         logger.info("Starting registration for user: {}", dto.getUsername());
         try {

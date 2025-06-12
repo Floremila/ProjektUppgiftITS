@@ -10,6 +10,9 @@ import se.amandaflorencia.projektuppgiftits.repository.UserRepository;
 
 import java.util.List;
 
+/** En serviceklass som hämtar användarens uppgifter när man
+ * autentiserar med jwt
+ * */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -19,6 +22,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /** Metoden kollar om en användare finns, och sparar den som en appUser
+     * De
+     * @param username är användarnamnet som ska sökas efter
+     * @return UserDetails användarens uppgifter; användarnamn, lösenord och roll
+     * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser appUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
