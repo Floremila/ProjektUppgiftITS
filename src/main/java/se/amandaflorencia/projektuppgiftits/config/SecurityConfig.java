@@ -27,6 +27,13 @@ import java.util.UUID;
 import com.nimbusds.jose.proc.SecurityContext;
 import se.amandaflorencia.projektuppgiftits.service.JwtUserDetailsService;
 
+/**
+ * Sets up the main security settings for the app.
+ *
+ * Enables security with JWT and configures things like password encoder
+ * and which endpoints require authentication.
+ */
+
 @EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfig {
@@ -37,18 +44,38 @@ public class SecurityConfig {
         this.jwtUserDetailsService = jwtUserDetailsService;
     }
 
+    /**
+     * Creates a password encoder using BCrypt.
+     *
+     * @return the PasswordEncoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
+    /**
+     * Gets the AuthenticationManager from the current config.
+     *
+     * @param config the authentication configuration.
+     * @return the AuthenticationManager.
+     * @throws Exception if it can't be created.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-
+    /**
+     * Sets up the security filter chain for HTTP requests.
+     *
+     * Disables CSRF, uses stateless sessions, and allows open access
+     * to login and Swagger endpoints. Everything else requires auth.
+     *
+     * @param http the HttpSecurity config.
+     * @return the SecurityFilterChain.
+     * @throws Exception if the setup fails.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -70,7 +97,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-
+    /**
+     * Generates an RSA key pair to sign JWT tokens.
+     *
+     * @return a KeyPair with public and private keys.
+     */
     @Bean
     public KeyPair keyPair() {
         try {
@@ -82,6 +113,12 @@ public class SecurityConfig {
         }
     }
 
+    /**
+     * Creates a JWK source from the RSA keys.
+     *
+     * @param keyPair the key pair used for signing.
+     * @return a JWKSource for the JWT encoder.
+     */
     @Bean
     public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
         RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
@@ -92,16 +129,33 @@ public class SecurityConfig {
         return (jwkSelector, context) -> jwkSelector.select(jwkSet);
     }
 
+    /**
+     * Sets up the JWT encoder using the JWK source.
+     *
+     * @param jwkSource the key source.
+     * @return the JwtEncoder.
+     */
     @Bean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);
     }
 
+    /**
+     * Sets up the JWT decoder using the RSA public key.
+     *
+     * @param keyPair the key pair.
+     * @return the JwtDecoder.
+     */
     @Bean
     public JwtDecoder jwtDecoder(KeyPair keyPair) {
         return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
     }
 
+    /**
+     * Customizes how roles are extracted from JWT tokens.
+     *
+     * @return the JwtAuthenticationConverter.
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();

@@ -41,6 +41,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Deletes a user by ID. Only accessible by users with the ADMIN role.
+     *
+     * @param id the ID of the user to delete.
+     * @return a response with no content if deletion is successful.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
@@ -48,6 +54,14 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Updates the user with the given ID using the new data from the request body.
+     * Only accessible by users with the ADMIN role.
+     *
+     * @param id the ID of the user to update.
+     * @param updatedAppUser the new user info.
+     * @return the updated user.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<AppUser> updateUser(@PathVariable Long id, @RequestBody AppUser updatedAppUser) {
