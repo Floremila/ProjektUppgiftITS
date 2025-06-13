@@ -66,6 +66,12 @@ public class UserService {
 
     }
 
+    /**
+     * Tries to delete a user based on their ID.
+     *
+     * @param id the ID of the user we want to remove.
+     * @throws UserNotFoundException if the user does not exist.
+     */
     public void deleteUserById(Long id) {
         logger.info("Starting deletion of user with ID: {}", id);
         try {
@@ -81,6 +87,15 @@ public class UserService {
             throw e;
         }
     }
+
+    /**
+     * Updates the user with the given ID using the new info from the updated user object.
+     *
+     * @param id the ID of the user to be updated.
+     * @param updatedAppUser the user data we want to use for the update.
+     * @return the updated AppUser.
+     * @throws UserNotFoundException if the user does not exist.
+     */
 
     public AppUser updateUser(Long id, AppUser updatedAppUser) {
         logger.info("Starting update for user with ID: {}", id);

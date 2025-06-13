@@ -21,6 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Integration tests for the UserController.
+ *
+ * Tests user-related actions like getting, deleting and updating users,
+ * including role-based access control.
+ */
+
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +44,10 @@ class UserControllerTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Sets up the test data before each test.
+     * Adds an admin and a regular user to the database.
+     */
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
@@ -56,6 +67,9 @@ class UserControllerTest {
         userRepository.save(user);
     }
 
+    /**
+     * Tests that an admin can get the list of users when users exist.
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnUsersListWhenUsersExist() throws Exception {
@@ -67,6 +81,9 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[?(@.username=='user')]").exists());
     }
 
+    /**
+     * Tests that the response is 204 No Content when there are no users.
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldReturnNoContentWhenNoUsers() throws Exception {
@@ -77,6 +94,9 @@ class UserControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    /**
+     * Tests that a user without ADMIN role is forbidden from accessing all users.
+     */
     @Test
     @WithMockUser(username = "user", roles = {"USER"})
     void shouldForbidNonAdminOnGetAll() throws Exception {
@@ -84,6 +104,9 @@ class UserControllerTest {
                 .andExpect(status().isForbidden());
     }
 
+    /**
+     * Tests that an admin can successfully delete a user.
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldDeleteUserWhenAdmin() throws Exception {
@@ -101,6 +124,9 @@ class UserControllerTest {
         assertTrue(opt.isEmpty(), "User should be removed from the database");
     }
 
+    /**
+     * Tests that a user without ADMIN role cannot delete users.
+     */
     @Test
     @WithMockUser(username = "user", roles = {"USER"})
     void shouldForbidNonAdminOnDelete() throws Exception {
@@ -108,6 +134,9 @@ class UserControllerTest {
                 .andExpect(status().isForbidden());
     }
 
+    /**
+     * Tests that an admin can update a user’s info.
+     */
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldUpdateUserWhenAdmin() throws Exception {
@@ -135,6 +164,9 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.consentGiven").value(true));
     }
 
+    /**
+     * Tests that a user without ADMIN role cannot update users.
+     */
     @Test
     @WithMockUser(username = "user", roles = {"USER"})
     void shouldForbidNonAdminOnUpdate() throws Exception {

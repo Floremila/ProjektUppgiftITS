@@ -7,6 +7,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Swagger/OpenAPI documentation.
+ *
+ * Sets up basic API info and defines the security scheme using JWT (bearer token).
+ * This allows Swagger UI to include an "Authorize" button for authenticated requests.
+ */
 @Configuration
 @OpenAPIDefinition(
         info = @Info(title = "ProjektUppgiftITS API", version = "v1"),
