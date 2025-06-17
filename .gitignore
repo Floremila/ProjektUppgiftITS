@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# HSQLDB persistence files
+/data/
+/data/*.lck
+/data/*.log
+/data/*.data
+/data/*.script
+/data/*.backup
+
+# log
+/logs/
+/logs/**
